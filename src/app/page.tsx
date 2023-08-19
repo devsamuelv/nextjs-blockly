@@ -73,14 +73,34 @@ export default function Home() {
 
 		Blockly.defineBlocksWithJsonArray([
 			{
-				type: "string_length",
+				type: "gg",
 				message0: "template: %1",
 				args0: [
 					{
-						type: "field_template",
-						name: "FIELDNAME",
+						type: "input_value",
+						name: "number",
 					},
 				],
+			},
+			{
+				type: "input_value",
+				message0: "reeeee",
+				output: "String",
+			},
+			{
+				type: "string_length",
+				message0: "length of %1",
+				args0: [
+					{
+						type: "input_value",
+						name: "VALUE",
+						check: "String",
+					},
+				],
+				output: "Number",
+				colour: 160,
+				tooltip: "Returns number of letters in the provided text.",
+				helpUrl: "http://www.w3schools.com/jsref/jsref_length_string.asp",
 			},
 		]);
 
@@ -91,6 +111,14 @@ export default function Home() {
 					{
 						kind: "block",
 						type: "string_length",
+					},
+					{
+						type: "input_value",
+						kind: "block",
+					},
+					{
+						kind: "block",
+						type: "gg",
 					},
 				],
 			},
