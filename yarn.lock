@@ -28,6 +28,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@blockly/continuous-toolbox@npm:^5.0.3":
+  version: 5.0.3
+  resolution: "@blockly/continuous-toolbox@npm:5.0.3"
+  peerDependencies:
+    blockly: ^10.0.0
+  checksum: d3a20fbea3990f4b77d358294889bc2df908e7bef1e9946785cf3961991ce2a5f470d892a6021fa8bbbe71a03e5dd6006b640b0bb80d0d2a9ad6641f17b1f8f7
+  languageName: node
+  linkType: hard
+
 "@eslint-community/eslint-utils@npm:^4.2.0":
   version: 4.4.0
   resolution: "@eslint-community/eslint-utils@npm:4.4.0"
@@ -778,6 +787,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "blockly-test@workspace:."
   dependencies:
+    "@blockly/continuous-toolbox": ^5.0.3
     "@types/node": 20.5.0
     "@types/react": 18.2.20
     "@types/react-dom": 18.2.7

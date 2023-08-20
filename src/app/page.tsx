@@ -9,39 +9,11 @@ import {
 	createElement,
 } from "react";
 import * as Blockly from "blockly/core";
-var toolbox = {
-	kind: "categoryToolbox",
-	contents: [
-		{
-			kind: "category",
-			name: "Control",
-			contents: [
-				{
-					kind: "block",
-					type: "controls_if",
-				},
-			],
-		},
-		{
-			kind: "category",
-			name: "Logic",
-			contents: [
-				{
-					kind: "block",
-					type: "logic_compare",
-				},
-				{
-					kind: "block",
-					type: "logic_operation",
-				},
-				{
-					kind: "block",
-					type: "logic_boolean",
-				},
-			],
-		},
-	],
-};
+const {
+	ContinuousToolbox,
+	ContinuousFlyout,
+	ContinuousMetrics,
+} = require("@blockly/continuous-toolbox");
 
 const Block = (props: any) => {
 	console.log(props);
@@ -57,19 +29,11 @@ export default function Home() {
 	let primaryWorkspace = useRef<Blockly.WorkspaceSvg>();
 
 	useEffect(() => {
-		// Blockly.Blocks["string_length"] = {
-		// 	init: function () {
-		// 		this.appendValueInput("VALUE")
-		// 			.setCheck("String")
-		// 			.appendField("length of");
-		// 		this.setOutput(true, "Number");
-		// 		this.setColour(160);
-		// 		this.setTooltip("Returns number of letters in the provided text.");
-		// 		this.setHelpUrl(
-		// 			"http://www.w3schools.com/jsref/jsref_length_string.asp"
-		// 		);
-		// 	},
-		// };
+		const customTheme = Blockly.Theme.defineTheme("zegit", {
+			base: Blockly.Themes.Zelos,
+			name: "zegit",
+			categoryStyles: {},
+		});
 
 		Blockly.defineBlocksWithJsonArray([
 			{
@@ -84,8 +48,8 @@ export default function Home() {
 			},
 			{
 				type: "input_value",
-				message0: "reeeee",
-				output: "String",
+				message0: "distance",
+				output: "Number",
 			},
 			{
 				type: "string_length",
@@ -94,7 +58,7 @@ export default function Home() {
 					{
 						type: "input_value",
 						name: "VALUE",
-						check: "String",
+						check: "Number",
 					},
 				],
 				output: "Number",
@@ -106,25 +70,50 @@ export default function Home() {
 
 		primaryWorkspace.current = Blockly.inject(blocklyDiv.current, {
 			toolbox: {
-				kind: "flyoutToolbox",
+				kind: "categoryToolbox",
 				contents: [
 					{
-						kind: "block",
-						type: "string_length",
+						kind: "category",
+						name: "Length",
+						colour: "Green",
+						contents: [
+							{
+								kind: "block",
+								type: "string_length",
+							},
+						],
 					},
 					{
-						type: "input_value",
-						kind: "block",
-					},
-					{
-						kind: "block",
-						type: "gg",
+						kind: "category",
+						name: "Operators",
+						colour: "blue",
+						contents: [
+							{
+								type: "input_value",
+								kind: "block",
+							},
+							{
+								kind: "block",
+								type: "gg",
+							},
+						],
 					},
 				],
 			},
+			theme: customTheme,
 			readOnly: false,
 			trashcan: true,
-			plugins: { "": "" },
+			grid: {
+				spacing: 20,
+				length: 3,
+				colour: "#ccc",
+				snap: true,
+			},
+			plugins: {
+				toolbox: ContinuousToolbox,
+				flyoutsVerticalToolbox: ContinuousFlyout,
+				metricsManager: ContinuousMetrics,
+			},
 			move: {
 				scrollbars: true,
 				drag: true,
