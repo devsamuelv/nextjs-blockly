@@ -9,6 +9,7 @@ import {
 	createElement,
 } from "react";
 import * as Blockly from "blockly/core";
+
 const {
 	ContinuousToolbox,
 	ContinuousFlyout,
@@ -76,12 +77,12 @@ export default function Home() {
 						kind: "category",
 						name: "Length",
 						colour: "Green",
-						contents: [
-							{
-								kind: "block",
-								type: "string_length",
-							},
-						],
+						// contents: [
+						// 	{
+						// 		kind: "block",
+						// 		type: "string_length",
+						// 	},
+						// ],
 					},
 					{
 						kind: "category",
