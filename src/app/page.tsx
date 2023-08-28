@@ -16,13 +16,6 @@ const {
 	ContinuousMetrics,
 } = require("@blockly/continuous-toolbox");
 
-const Block = (props: any) => {
-	console.log(props);
-	props = { ...props, is: "blockly" };
-
-	return createElement("block", props, props.children);
-};
-
 export default function Home() {
 	const toolbox = useRef<any>();
 	const blocklyDiv = useRef<any>();

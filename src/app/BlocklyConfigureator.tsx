@@ -7,11 +7,7 @@ import {
 	defineBlocksWithJsonArray,
 	inject,
 } from "blockly";
-import {
-	CategoryInfo,
-	DynamicCategoryInfo,
-	StaticCategoryInfo,
-} from "blockly/core/utils/toolbox";
+import { CategoryInfo } from "blockly/core/utils/toolbox";
 import { Fragment, useEffect, useRef, useState } from "react";
 
 const {
@@ -29,10 +25,11 @@ export type BlockConfig = {
 	helpUrl?: string;
 	args0: { type: string; name: string; check: string }[];
 	colour: number;
+	previousStatement?: string;
+	nextStatement?: string;
 };
 
-export interface Category {
-	contents: BlockConfig[];
+export interface BaseCategory {
 	name: string;
 	kind: string;
 	id?: string | undefined;
@@ -41,6 +38,14 @@ export interface Category {
 	cssconfig?: ToolboxCategory.CssConfig | undefined;
 	hidden?: string | undefined;
 	expanded?: string | boolean;
+}
+
+export interface Category extends BaseCategory {
+	contents: BlockConfig[];
+}
+
+export interface InternalCategory extends BaseCategory {
+	contents: { type: string; kind: string }[];
 }
 
 export const useBlocklyConfigurator = (c: Category[]) => {
@@ -74,27 +79,28 @@ export const useBlocklyConfigurator = (c: Category[]) => {
 		setCategories([...categories, newCategory]);
 	};
 
-	const BlocklyWorkspace: React.FC<any> = () => {
+	const BlocklyWorkspace: React.FC<any> = ({ children }) => {
 		useEffect(() => {
-			const newBlocks = c.flatMap((c) => c.contents);
-			const brokenDownBlocks = newBlocks.map((v) => {
-				return { kind: "block", type: v.type };
+			const definedBlocks = c.flatMap((c) => c.contents);
+			const rebuildCategories = c.map((ct) => {
+				let _category: InternalCategory = { ...ct, contents: [] };
+
+				_category.contents = ct.contents.map((v) => {
+					return { kind: "block", type: v.type };
+				});
+
+				return _category;
 			});
 
-			const newCategory: any = {
-				...c,
-				contents: brokenDownBlocks,
-			};
+			const _blocks = [...blocks, ...definedBlocks];
+			const _categories = [...categories, ...rebuildCategories];
 
-			setBlocks([...blocks, ...newBlocks]);
-			setCategories([...categories, newCategory]);
-
-			defineBlocksWithJsonArray(blocks);
+			defineBlocksWithJsonArray(_blocks);
 
 			primaryWorkspace.current = inject(blocklyDiv.current, {
 				toolbox: {
 					kind: "categoryToolbox",
-					contents: categories,
+					contents: _categories,
 				},
 				theme: customTheme,
 				readOnly: false,
@@ -125,7 +131,7 @@ export const useBlocklyConfigurator = (c: Category[]) => {
 					style={{ position: "absolute" }}
 					id="blocklyDiv"
 				></div>
-				<div ref={toolbox}></div>
+				<div ref={toolbox}>{children}</div>
 			</Fragment>
 		);
 	};
